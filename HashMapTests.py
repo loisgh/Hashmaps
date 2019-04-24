@@ -1,5 +1,4 @@
 import unittest
-import mock
 from HashMap import *
 
 # TODO Review how to patch
@@ -54,9 +53,3 @@ class HashMapTests(unittest.TestCase):
         myhash.add("something", 99)
         myhash.add("something more", 198)
         self.assertEqual(myhash.size(), 2)
-
-    def testhashcontainskey(self):
-        myhash = HashMap()
-        myhash.add("something", 99)
-        self.assertEqual(myhash.contains_key("something"), True)
-        self.assertEqual(myhash.contains_key("nothing"), False)
