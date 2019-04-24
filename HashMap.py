@@ -10,7 +10,8 @@ class HashMap:
     def add(self, key, value):
         hashkey = HashMap.__gethash__(key)
         if not self.HashMap[hashkey]:
-            self.HashMap.insert(hashkey, [key, value])
+            value_to_store = [key, value]
+            self.HashMap.insert(hashkey, value_to_store)
             self.length += 1
         elif self.HashMap[hashkey][0] != key:
             self.HashMap[hashkey].append(key)
@@ -22,19 +23,19 @@ class HashMap:
     def get(self, key):
         hashkey = HashMap.__gethash__(key)
         if self.HashMap[hashkey]:
-            if len(self.HashMap[hashkey]) == 2:
-                return self.HashMap[hashkey][1]
-            elif len(self.HashMap[hashkey]) > 2:
+            if len(self.HashMap[hashkey]) > 2:
                 idx = self.__find_if_hashclash__(hashkey, 'v')
                 return self.HashMap[hashkey][idx]
+            else:
+                return self.HashMap[hashkey][1]
         else:
             return None
 
     def remove(self, key):
-        theKey = HashMap.__gethash__(key)
-        if self.HashMap[theKey]:
-            if len(self.HashMap[theKey]) == 2:
-                self.HashMap[HashMap.__gethash__(key)] == None
+        thekey = HashMap.__gethash__(key)
+        if self.HashMap[thekey]:
+            if len(self.HashMap[thekey]) == 2:
+                self.HashMap[HashMap.__gethash__(key)] = None
             else:
                 hashkey = HashMap.__gethash__(key)
                 idx = self.__find_if_hashclash__(hashkey, 'i')
@@ -45,17 +46,17 @@ class HashMap:
     def size(self):
         return self.length
 
-    def containsKey(self, key):
+    def contains_key(self, key):
         hashkey = HashMap.__gethash__(key)
         if self.HashMap[hashkey]:
-            if len(self.HashMap[hashkey]) == 2:
-                return True
-            elif len(self.HashMap[hashkey]) > 2:
+            if len(self.HashMap[hashkey]) > 2:
                 idx = self.__find_if_hashclash__(hashkey, 'v')
                 if self.HashMap[hashkey][idx]:
                     return True
                 else:
                     return False
+            else:
+                return True
         else:
             return False
 

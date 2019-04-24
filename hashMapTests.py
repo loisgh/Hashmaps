@@ -58,5 +58,5 @@ class HashMapTests(unittest.TestCase):
     def testhashcontainskey(self):
         myhash = HashMap()
         myhash.add("something", 99)
-        self.assertEqual(myhash.containsKey("something"), True)
-        self.assertEqual(myhash.containsKey("nothing"), False)
+        self.assertEqual(myhash.contains_key("something"), True)
+        self.assertEqual(myhash.contains_key("nothing"), False)
