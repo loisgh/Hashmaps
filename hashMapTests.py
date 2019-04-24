@@ -1,52 +1,62 @@
 import unittest
 import mock
-from hashMap import *
+from HashMap import *
+
+# TODO Review how to patch
+# Return hashclash data from methods using @patch
+# See that hashclash methods return correct data
 
 
-class hashMapTests(unittest.TestCase):
+class HashMapTests(unittest.TestCase):
 
     def testutf8(self):
-        the_bytes = hashMap.__getutf8__("hello")
+        the_bytes = HashMap.__getutf8__("hello")
         self.assertEqual(the_bytes.__class__.__name__, 'bytes')
 
-        the_bytes = hashMap.__getutf8__("hello")
+        the_bytes = HashMap.__getutf8__("hello")
         self.assertNotEqual(the_bytes.__class__.__name__, 'int')
 
     def testhash(self):
-        thehash = hashMap.__gethash__("hello")
+        thehash = HashMap.__gethash__("hello")
         self.assertEqual(thehash.__class__.__name__, 'int')
 
     def testhashadd(self):
-        myhash = hashMap()
+        myhash = HashMap()
         myhash.add("something", 99)
-        self.assertEqual(myhash.hashMap[hashMap.__gethash__("something")],["something", 99])
-        #add same key different value
+        self.assertEqual(myhash.HashMap[HashMap.__gethash__("something")], ["something", 99])
+        # add same key different value
         myhash.add("something", 100)
-        self.assertEqual(myhash.hashMap[hashMap.__gethash__("something")],["something", 100])
-        self.assertEqual(myhash.length,1)
-        #add another value make sure length has been incremented
+        self.assertEqual(myhash.HashMap[HashMap.__gethash__("something")], ["something", 100])
+        self.assertEqual(myhash.length, 1)
+        # add another value make sure length has been incremented
         myhash.add("something else", 105)
-        self.assertEqual(myhash.hashMap[hashMap.__gethash__("something else")],["something else", 105])
-        self.assertEqual(myhash.size(),2)
+        self.assertEqual(myhash.HashMap[HashMap.__gethash__("something else")], ["something else", 105])
+        self.assertEqual(myhash.size(), 2)
 
     def testhashget(self):
-        myhash = hashMap()
+        myhash = HashMap()
         myhash.add("something", 99)
         self.assertEqual(myhash.get("something"), 99)
         self.assertEqual(myhash.get("nothing"), None)
 
     def testhashremove(self):
-        myhash = hashMap()
+        myhash = HashMap()
         myhash.add("something", 99)
         myhash.add("something else", 199)
         self.assertEqual(myhash.size(), 2)
         myhash.remove("something")
-        self.assertEqual(myhash.size(),1)
+        self.assertEqual(myhash.size(), 1)
         myhash.remove("not there")
-        self.assertEqual(myhash.size(),1)
+        self.assertEqual(myhash.size(), 1)
 
     def testgetsize(self):
-        myhash = hashMap()
+        myhash = HashMap()
         myhash.add("something", 99)
         myhash.add("something more", 198)
         self.assertEqual(myhash.size(), 2)
+
+    def testhashcontainskey(self):
+        myhash = HashMap()
+        myhash.add("something", 99)
+        self.assertEqual(myhash.containsKey("something"), True)
+        self.assertEqual(myhash.containsKey("nothing"), False)
