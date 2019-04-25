@@ -21,18 +21,12 @@ class HashMap:
     def get(self, key):
         hashkey = HashMap.__gethash__(key)
         if type(self.HashMap[hashkey]) is list:
-            if len(self.HashMap[hashkey]) > 2:
+            if len(self.HashMap[hashkey]) > 2:  #Return correct Key and value from the location which has a hashclash
                 idx = self.__find_if_hashclash__(key, hashkey, 'v')
                 if idx is not None:
                     return self.HashMap[hashkey][idx]
-                else:
-                    return None
-            elif self.HashMap[hashkey][0] == key:
+            elif self.HashMap[hashkey][0] == key:   #Check that the data matches the key and return it if it does
                 return self.HashMap[hashkey][1]
-            else:
-                return None
-        else:
-            return None
 
     def remove(self, key):
         thekey = HashMap.__gethash__(key)
