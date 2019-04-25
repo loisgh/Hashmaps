@@ -1,23 +1,18 @@
 import unittest
+from unittest.mock import patch
+import mock
 from HashMap import *
 
-# TODO Review how to patch
 # Return hashclash data from methods using @patch
 # See that hashclash methods return correct data
-
+# TODO First Verify that hashclash functions work by changing hash method
 
 class HashMapTests(unittest.TestCase):
-
-    def testutf8(self):
-        the_bytes = HashMap.__getutf8__("hello")
-        self.assertEqual(the_bytes.__class__.__name__, 'bytes')
-
-        the_bytes = HashMap.__getutf8__("hello")
-        self.assertNotEqual(the_bytes.__class__.__name__, 'int')
 
     def testhash(self):
         thehash = HashMap.__gethash__("hello")
         self.assertEqual(thehash.__class__.__name__, 'int')
+        self.assertEqual(HashMap.__gethash__("hello"), hash("hello") % 255)
 
     def testhashadd(self):
         myhash = HashMap()
@@ -38,6 +33,13 @@ class HashMapTests(unittest.TestCase):
         self.assertEqual(myhash.get("something"), 99)
         self.assertEqual(myhash.get("nothing"), None)
 
+        # with mock.patch('HashMap.__gethash__', ) as mock_gethash:
+        #     mock_gethash.return_value = 25
+        # myhash.add("hashclash1", 75)
+        # myhash.add("hashclash2", 175)
+        # self.assertEqual(myhash.get("hashclash1"), 75)
+        # self.assertEqual(myhash.get("hashclash2"), 175)
+
     def testhashremove(self):
         myhash = HashMap()
         myhash.add("something", 99)
@@ -51,5 +53,12 @@ class HashMapTests(unittest.TestCase):
     def testgetsize(self):
         myhash = HashMap()
         myhash.add("something", 99)
+        self.assertEqual(myhash.size(), 1)
         myhash.add("something more", 198)
+        self.assertEqual(myhash.size(), 2)
+        myhash.add("something more", 198)
+        self.assertEqual(myhash.size(), 2)
+        myhash.add("something even more", 198)
+        self.assertEqual(myhash.size(), 3)
+        myhash.remove("something even more")
         self.assertEqual(myhash.size(), 2)
