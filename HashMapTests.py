@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import patch
 import mock
 from HashMap import HashMap
 
@@ -57,7 +56,6 @@ class HashMapTests(unittest.TestCase):
     @mock.patch('HashMap.HashMap._gethash')
     def testhashclash(self, mock_gethash):
         mock_gethash.return_value = 25
-        self.assertEqual(HashMap._gethash("something"), 25)
         myhash = HashMap()
         myhash.add("something", 99)
         result = myhash.HashMap[25]
