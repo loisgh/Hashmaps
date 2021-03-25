@@ -1,4 +1,4 @@
-# YCharts
+# HashMap
 An implementation of a hashmap
 
 The class HashMap is an implementation of HashMap.  HashMapTests is a suite of tests that put this class through its paces.  I have included tests to manage a hash clash. 
