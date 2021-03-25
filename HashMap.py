@@ -1,10 +1,11 @@
 class HashMap:
     """This class is an implementation of a HashMap that uses lists and hashing under the hood """
 
-    def __init__(self):
+    def __init__(self, capacity):
         """ The size is the number of idx locations that do not contain None """
         self.length = 0
-        self.HashMap = [None] * 255
+        self.capacity = capacity
+        self.HashMap = [None] * self.capacity
 
     def add(self, key, value):
         """
@@ -13,18 +14,23 @@ class HashMap:
         :param value: Any number or string
         :return: No return value.
         """
-        hashkey = HashMap._gethash(key)
-        if type(self.HashMap[hashkey]) is list:
-            if self.HashMap[hashkey][0] != key:  # There is a hashclash append to the location
-                self.HashMap[hashkey].append(key)
-                self.HashMap[hashkey].append(value)
-                self.length += 1
-            else:                               # The key exists and matches so the value gets overlayed
-                self.HashMap[hashkey] = [key, value]
-        else:                                   # The key does not exist so add it
+        threshhold = self.capacity * 0.75
+        if self.length >= threshhold:
+            self._increase_size()
+
+        hashkey = self._gethash(key)
+        if not self.HashMap[hashkey]:
+            # The key does not exist so add it
             value_to_store = [key, value]
             self.HashMap[hashkey] = value_to_store
             self.length += 1
+        elif self.HashMap[hashkey] and key not in self.HashMap[hashkey]:
+            # There is a hashclash append to the location
+            self.HashMap[hashkey].extend([key, value])
+            self.length += 1
+        else:
+            # The key exists and matches so the value gets overlayed
+            self.HashMap[hashkey] = [key, value]
 
     def get(self, key):
         """
@@ -32,13 +38,15 @@ class HashMap:
         :param key:
         :return: the value stored in the hashmap
         """
-        hashkey = HashMap._gethash(key)
+        hashkey = self._gethash(key)
         if type(self.HashMap[hashkey]) is list:
-            if len(self.HashMap[hashkey]) > 2:  # Return correct Key and value from the location which has a hashclash
-                idx = self._find_if_hashclash(key, hashkey, 'v')
+            if len(self.HashMap[hashkey]) > 2:
+                # Return correct Key and value from the location which has a hashclash
+                idx = self._find_if_hashclash(key, hashkey, "v")
                 if idx is not None:
                     return self.HashMap[hashkey][idx]
-            elif self.HashMap[hashkey][0] == key:   # Check that the data matches the key and return it if it does
+            elif self.HashMap[hashkey][0] == key:
+                # Check that the data matches the key and return it if it does
                 return self.HashMap[hashkey][1]
 
     def remove(self, key):
@@ -47,13 +55,15 @@ class HashMap:
         :param key:
         :return: No return value.
         """
-        thekey = HashMap._gethash(key)
+        thekey = self._gethash(key)
         if self.HashMap[thekey] is not None:
             if len(self.HashMap[thekey]) == 2:
-                self.HashMap[HashMap._gethash(key)] = None   # Keep the location but set the value to None
+                self.HashMap[
+                    self._gethash(key)
+                ] = None  # Keep the location but set the value to None
             else:
-                hashkey = HashMap._gethash(key)
-                idx = self._find_if_hashclash(key, hashkey, 'i')
+                hashkey = self._gethash(key)
+                idx = self._find_if_hashclash(key, hashkey, "i")
                 self.HashMap[hashkey].pop(idx)
                 self.HashMap[hashkey].pop(idx)
             self.length -= 1
@@ -72,14 +82,36 @@ class HashMap:
         :param key_or_value:
         :return: idx or the key or value within the list item.
         """
-        idx = self.HashMap[location].index(key) if key in self.HashMap[location] else None
+        idx = (
+            self.HashMap[location].index(key) if key in self.HashMap[location] else None
+        )
         if idx is not None:
-            if key_or_value == 'v':
+            if key_or_value == "v":
                 return idx + 1
             else:
                 return idx
 
-    @staticmethod
-    def _gethash(invalue):
+    def _gethash(self, invalue):
         """ return a hash using the pythons hash method """
-        return hash(invalue) % 255
+        return hash(invalue) % self.capacity
+
+    def _increase_size(self):
+        keys_vals_to_move = [item for item in self.HashMap if item]
+        self.length = 0
+        self.capacity = self.capacity * 2
+        self.HashMap = [None] * self.capacity
+        for item in keys_vals_to_move:
+            while len(item) > 0:
+                self.add(item[0], item[1])
+                item.pop(0)
+                item.pop(0)
+
+    def __str__(self):
+        return "scapacity of hash: {}, current size of hash: {}".format(
+            self.capacity, self.length
+        )
+
+    def __repr__(self):
+        return "capacity of hash: {}, current size of hash: {}".format(
+            self.capacity, self.length
+        )
