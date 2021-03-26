@@ -5,6 +5,7 @@ The class HashMap is an implementation of HashMap.  HashMapTests is a suite of t
 
 The tests can be run in an ide or at the command line using: 
 
+Please note that HashMap elements can be accessed using bracket notation.
     
 **python -m unittest HashMapTests**
 
