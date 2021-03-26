@@ -18,6 +18,7 @@ class HashMapTests(unittest.TestCase):
         self.assertEqual(
             myhash.HashMap[myhash._gethash("something")], ["something", 99]
         )
+        self.assertEqual(myhash["something"], 99)
         # add same key different value
         myhash.add("something", 100)
         self.assertEqual(
@@ -30,6 +31,9 @@ class HashMapTests(unittest.TestCase):
             myhash.HashMap[myhash._gethash("something else")], ["something else", 105]
         )
         self.assertEqual(myhash.size(), 2)
+        myhash["another thing"] = 299
+        self.assertEqual(myhash.size(), 3)
+        self.assertEqual(myhash["another thing"], 299)
 
     def testhashget(self):
         myhash = HashMap(255)

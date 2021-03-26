@@ -115,3 +115,9 @@ class HashMap:
         return "capacity of hash: {}, current size of hash: {}".format(
             self.capacity, self.length
         )
+
+    def __getitem__(self, arg):
+        return self.get(arg)
+
+    def __setitem__(self, key, val):
+        return self.add(key, val)
