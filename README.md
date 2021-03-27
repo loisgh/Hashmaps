@@ -4,8 +4,8 @@ An implementation of a hashmap
 The class HashMap is an implementation of HashMap.  
 HashMapTests is a suite of tests that put this class through its paces. 
 This includes testing: 
-* A hash clash.
-* A hash map resizing.   
+* hash clash.
+* hash map resizing.   
 
 The tests can be run in an ide or at the command line using: 
 
