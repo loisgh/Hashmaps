@@ -1,8 +1,13 @@
 class HashMap:
-    """This class is an implementation of a HashMap that uses lists and hashing under the hood """
+    """
+    This class is an implementation of a HashMap that uses lists and
+    hashing under the hood
+    """
 
     def __init__(self, capacity):
-        """ The size is the number of idx locations that do not contain None """
+        """
+        :param capacity: The max possible size of the HashMap
+        """
         self.length = 0
         self.capacity = capacity
         self.HashMap = [None] * self.capacity
@@ -10,9 +15,10 @@ class HashMap:
     def add(self, key, value):
         """
         This method allows you to add to the hashmap.
+
         :param key: Any string
         :param value: Any number or string
-        :return: No return value.
+        :returns: no value
         """
         threshhold = self.capacity * 0.75
         if self.length >= threshhold:
@@ -35,8 +41,9 @@ class HashMap:
     def get(self, key):
         """
         Returns the value for a given key
-        :param key:
-        :return: the value stored in the hashmap
+
+        :param key: A string with the value of the key
+        :returns: the corresponding value stored in the hashmap
         """
         hashkey = self._gethash(key)
         if type(self.HashMap[hashkey]) is list:
@@ -52,8 +59,9 @@ class HashMap:
     def remove(self, key):
         """
         Removes the value for the given key. Subtracts from length.
-        :param key:
-        :return: No return value.
+
+        :param key: string
+        :returns: no value.
         """
         thekey = self._gethash(key)
         if self.HashMap[thekey] is not None:
@@ -69,6 +77,11 @@ class HashMap:
             self.length -= 1
 
     def size(self):
+        """
+        This method returns the length of the HashMap.  This is the number of non None values.
+
+        :returns: int that represents the number of non null values
+        """
         return self.length
 
     def _find_if_hashclash(self, key, location, key_or_value):
@@ -92,10 +105,19 @@ class HashMap:
                 return idx
 
     def _gethash(self, invalue):
-        """ return a hash using the pythons hash method """
+        """
+        return a hash using the pythons hash method
+        :param invalue: value to hash
+        """
         return hash(invalue) % self.capacity
 
     def _increase_size(self):
+        """
+        Take the current hash and increase the capacity.
+        This involves rehashing and moving the values to new locations
+        based on the new size of the Hash.
+        :return: no value
+        """
         keys_vals_to_move = [item for item in self.HashMap if item]
         self.length = 0
         self.capacity = self.capacity * 2
@@ -107,17 +129,39 @@ class HashMap:
                 item.pop(0)
 
     def __str__(self):
+        """
+        String representation of HashMap
+        :return: String with capacity and current size
+        """
         return "scapacity of hash: {}, current size of hash: {}".format(
             self.capacity, self.length
         )
 
     def __repr__(self):
+        """
+        String representation of HashMap
+        :return: String with capacity and current size
+        """
         return "capacity of hash: {}, current size of hash: {}".format(
             self.capacity, self.length
         )
 
-    def __getitem__(self, arg):
-        return self.get(arg)
+    def __getitem__(self, key):
+        """
+        Wrapper function to allow use of bracket notation
+        in retrieving the value of the key.
+
+        :param key: Key of the Hashed Item
+        :return: Value of Key
+        """
+        return self.get(key)
 
     def __setitem__(self, key, val):
+        """
+        Wrapper function to allow use of bracket notation
+        in setting the value of the key.
+
+        :param key: Key of the Hashed item
+        :param value: Value of the Hashed item
+        """
         return self.add(key, val)
