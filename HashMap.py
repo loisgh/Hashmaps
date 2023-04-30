@@ -1,10 +1,19 @@
+from __future__ import annotations
+
+from typing import Any, List, Optional
+
+
 class HashMap:
     """
     This class is an implementation of a HashMap that uses lists and
     hashing under the hood
     """
 
-    def __init__(self, capacity):
+    length: int
+    capacity: int
+    HashMap: List[Any]
+
+    def __init__(self, capacity: int):
         """
         :param capacity: The max possible size of the HashMap
         """
@@ -12,7 +21,7 @@ class HashMap:
         self.capacity = capacity
         self.HashMap = [None] * self.capacity
 
-    def add(self, key, value):
+    def add(self, key: str, value: str) -> Optional[None]:
         """
         This method allows you to add to the hashmap.
 
@@ -38,7 +47,7 @@ class HashMap:
             # The key exists and matches so the value gets overlayed
             self.HashMap[hashkey] = [key, value]
 
-    def get(self, key):
+    def get(self, key: str) -> str:
         """
         Returns the value for a given key
 
@@ -48,15 +57,19 @@ class HashMap:
         hashkey = self._gethash(key)
         if type(self.HashMap[hashkey]) is list:
             if len(self.HashMap[hashkey]) > 2:
-                # Return correct Key and value from the location which has a hashclash
+                """
+                Return correct Key and value from the
+                location which has a hashclash
+                """
                 idx = self._find_if_hashclash(key, hashkey, "v")
                 if idx is not None:
                     return self.HashMap[hashkey][idx]
             elif self.HashMap[hashkey][0] == key:
                 # Check that the data matches the key and return it if it does
                 return self.HashMap[hashkey][1]
+        return ""
 
-    def remove(self, key):
+    def remove(self, key: str) -> None:
         """
         Removes the value for the given key. Subtracts from length.
 
@@ -76,42 +89,48 @@ class HashMap:
                 self.HashMap[hashkey].pop(idx)
             self.length -= 1
 
-    def size(self):
+    def size(self) -> int:
         """
-        This method returns the length of the HashMap.  This is the number of non None values.
+        This method returns the length of the HashMap.
+        This is the number of non None values.
 
-        :returns: int that represents the number of non null values
+        :returns: int that represents the number of
+                    non null values
         """
         return self.length
 
-    def _find_if_hashclash(self, key, location, key_or_value):
+    def _find_if_hashclash(self, key: str, location: int, key_or_value: str):
         """
         Find the key or value when there is a hashclash.
-        In the event of a hashclash there will be more than one key, value pair for a list item.
-        This method finds the correct one and returns the idx of the key or value.  If no key is
-        found than None is returned.
+        In the event of a hashclash there will be more than one key,
+        value pair for a list item.
+        This method finds the correct one and returns the idx of
+        the key or value.
+        If no key is found than None is returned.
         :param key:
         :param location:
         :param key_or_value:
         :return: idx or the key or value within the list item.
         """
-        idx = (
-            self.HashMap[location].index(key) if key in self.HashMap[location] else None
-        )
+        if key in self.HashMap[location]:
+            idx = self.HashMap[location].index(key)
+        else:
+            idx = None
+
         if idx is not None:
             if key_or_value == "v":
                 return idx + 1
             else:
                 return idx
 
-    def _gethash(self, invalue):
+    def _gethash(self, invalue) -> int:
         """
         return a hash using the pythons hash method
         :param invalue: value to hash
         """
         return hash(invalue) % self.capacity
 
-    def _increase_size(self):
+    def _increase_size(self) -> None:
         """
         Take the current hash and increase the capacity.
         This involves rehashing and moving the values to new locations
@@ -128,7 +147,7 @@ class HashMap:
                 item.pop(0)
                 item.pop(0)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         String representation of HashMap
         :return: String with capacity and current size
@@ -137,7 +156,7 @@ class HashMap:
             self.capacity, self.length
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         String representation of HashMap
         :return: String with capacity and current size
@@ -146,7 +165,7 @@ class HashMap:
             self.capacity, self.length
         )
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> str:
         """
         Wrapper function to allow use of bracket notation
         in retrieving the value of the key.
@@ -156,7 +175,7 @@ class HashMap:
         """
         return self.get(key)
 
-    def __setitem__(self, key, val):
+    def __setitem__(self, key: str, val: str) -> None:
         """
         Wrapper function to allow use of bracket notation
         in setting the value of the key.
